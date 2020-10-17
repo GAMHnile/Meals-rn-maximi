@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         borderRadius: 20,
-        overflow: "hidden",
+        overflow: Platform.OS==="android" && Platform.Version >= 21? "hidden" : "visible",
         margin: 15,
         elevation: 5,
         shadowColor: "black",

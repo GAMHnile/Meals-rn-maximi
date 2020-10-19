@@ -1,24 +1,25 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, FlatList, Platform } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { CATEGORIES } from '../data/dummy-data';
 
+import CustomHeaderButton from '../components/CustomHeaderButton';
 import CategoryGridTile from '../components/CategoryGridTile';
-
 
 const CategoriesScreen = props => {
     const renderGridItem = (itemData) => {
         return (
-            <CategoryGridTile 
-            title={itemData.item.title}
-            color={itemData.item.color} 
-            onSelect={() => {
-                props.navigation.navigate({
-                    routeName: "CategoryMeals", params: {
-                        categoryId: itemData.item.id
-                    }
-                })
-            }} 
+            <CategoryGridTile
+                title={itemData.item.title}
+                color={itemData.item.color}
+                onSelect={() => {
+                    props.navigation.navigate({
+                        routeName: "CategoryMeals", params: {
+                            categoryId: itemData.item.id
+                        }
+                    })
+                }}
             />
         );
     }
@@ -38,11 +39,21 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-    
+
 });
 
-CategoriesScreen.navigationOptions = {
-    headerTitle: "All Categories"
+CategoriesScreen.navigationOptions = (navData) => {
+    return {
+        headerTitle: "All Categories",
+        headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton} >
+                <Item title="Menu"
+                    iconName={Platform.OS === "ios" ? "ios-menu" : "md-menu"} 
+                    onPress={()=>{navData.navigation.toggleDrawer()}}
+                    />
+            </HeaderButtons>
+        )
+    }
 }
 
 export default CategoriesScreen;

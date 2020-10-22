@@ -7,6 +7,10 @@ import DefaultText from '../components/DefaultText';
 
 import COLORS from '../constants/Colors';
 
+//redux imports
+import { useDispatch } from 'react-redux';
+import { setFilters } from '../redux/meals/meals.actions';
+
 const FilterItem = props => {
     return (
         <View style={styles.filterContainer}>
@@ -22,6 +26,7 @@ const FilterItem = props => {
 
 const FiltersScreen = props => {
     const { navigation } = props;
+    const dispatch = useDispatch();
 
     const [isGluttenFree, setIsGluttenFree] = useState(false);
     const [isLactoseFree, setIsLactoseFree] = useState(false);
@@ -35,9 +40,10 @@ const FiltersScreen = props => {
             vegan: isVegan,
             vegetarian: isVegetarian
         };
-
-        console.log(filterSnapshot);
-    }, [isGluttenFree, isLactoseFree, isVegan, isVegetarian]);
+        // react-redux guarantees that dispatch will not change so it will not
+        //cause recreation upon rerenders when used as a dependency
+        dispatch(setFilters(filterSnapshot));
+    }, [isGluttenFree, isLactoseFree, isVegan, isVegetarian, dispatch]);
 
 
     useEffect(()=>{
